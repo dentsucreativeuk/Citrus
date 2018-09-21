@@ -1,0 +1,14 @@
+{
+	"type": "craft-plugin",
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/njpanderson/varnish-connect"
+		}
+	],
+	"require": {
+		"njpanderson/varnish-connect": "dev-master"
+	},
+	"require-dev": {
+	}
+}

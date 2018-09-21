@@ -1,0 +1,40 @@
+{
+    "name": "whitespace/citrus",
+    "description": "Automatically purge and ban cached elements in Varnish",
+    "type": "craft-plugin",
+    "version": "0.0.2",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "citrus"
+    ],
+    "support": {
+        "docs": "https://github.com/Whitespacers/Citrus/citrus/blob/master/README.md",
+        "issues": "https://github.com/Whitespacers/Citrus/citrus/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Whitespace",
+            "homepage": "https://whitespacers.com"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "whitespace\\citrus\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Citrus",
+        "handle": "citrus",
+        "hasCpSettings": false,
+        "hasCpSection": true,
+        "changelogUrl": "https://raw.githubusercontent.com/Whitespacers/Citrus/citrus/master/CHANGELOG.md",
+        "class": "whitespace\\citrus\\Citrus"
+    }
+}

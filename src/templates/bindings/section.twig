@@ -1,0 +1,49 @@
+{% extends "citrus/_layouts/cp" %}
+
+{% set selectedSubnavItem = "bindings" %}
+
+{% import "_includes/forms" as forms %}
+
+{% block actionButton %}
+	{% if section is defined %}
+		<input type="hidden" name="action" value="citrus/bindings/save">
+		<input type="hidden" name="sectionId" value="{{ section.id }}">
+
+		<div class="btngroup">
+			<input type="submit" class="btn submit" value="{{ 'Save bindings'|t }}">
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% set content %}
+	{% if section is defined %}
+		{% for type in types %}
+			<div id="type{{ type.id }}"{% if (not loop.first) %} class="hidden"{% endif %}>
+				{% set tableId = 'bindingsType_' ~ type.id %}
+
+				{{
+					forms.editableTable({
+						id: tableId,
+						name: tableId,
+						cols: {
+							'bindType': {
+								heading: 'Type',
+								type: 'select',
+								options: bindTypes
+							},
+							'query': {
+								heading: 'Query / URI',
+								type: 'singleline'
+							}
+						},
+						rows: bindings[type.id]
+					})
+				}}
+			</div>
+		{% endfor %}
+
+		{% if bansSupported %}
+			{% include 'citrus/fragments/bankeys.twig' with locales %}
+		{% endif %}
+	{% endif %}
+{% endset %}

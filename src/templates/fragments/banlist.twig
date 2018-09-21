@@ -1,0 +1,32 @@
+{% for host in hostList %}
+	{% if host.adminError is defined %}
+		<p><b>Error with Varnish Admin socket:</b> <span class="error">{{ host.adminError }}</span></p>
+	{% endif %}
+
+	{% if (host.banList is defined) %}
+	<div class="dashboard">
+		<div class="banlist">
+			<h2>Ban list for host {{ host.id }} ({{ host.hostName }})</h2>
+
+			<table class="data fullwidth">
+				<thead>
+					<tr>
+						<th>Spec</th>
+						<th>Flags</th>
+						<th>Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for ban in host.banList %}
+					<tr>
+						<td>{{ ban.spec }}</td>
+						<td>{{ ban.flags }}</td>
+						<td>{{ ban.gmdate|date('j M Y g:i a') }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	{% endif %}
+{% endfor %}

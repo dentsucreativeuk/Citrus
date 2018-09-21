@@ -1,0 +1,35 @@
+{% extends "citrus/_layouts/cp" %}
+
+{% set selectedSubnavItem = "bindings" %}
+
+{% import "_includes/forms" as forms %}
+
+{% set content %}
+	<h2>Set section Purge/Ban bindings</h2>
+
+	<p>Create section to URI or ban query maps. Entries added or edited within these sections will trigger bindings defined here.</p>
+
+	<div{% if sections %} class="hidden"{% endif %}>
+		<p>{{ "No sections exist yet."|t }}</p>
+	</div>
+
+	<table class="data fullwidth">
+		<thead>
+			<tr>
+				<th>{{ 'Name'|t }}</th>
+				<th>{{ 'Bindings'|t }}</th>
+				<th>{{ 'Edit bindings'|t }}</th>
+			</tr>
+		</thead>
+
+		<tbody>
+		{% for section in sections %}
+			<tr>
+				<td>{{ section.craftSection.name }}</td>
+				<td>{{ section.bindings }}</td>
+				<td><a href="{{ url('citrus/bindings/section/', { sectionId: section.craftSection.id }) }}">{{ 'Edit bindings'|t }}</a></td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endset %}

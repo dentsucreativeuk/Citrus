@@ -1,0 +1,113 @@
+/**
+ * citrus plugin for Craft CMS
+ *
+ * citrus CSS
+ *
+ * @author    Whitespace
+ * @copyright Copyright (c) 2018 Whitespace
+ * @link      https://whitespacers.com
+ * @package   Citrus
+ * @since     0.0.1
+ */
+
+#nav li a.sel {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+#page-header .purge-enabled-notice {
+	flex-basis: 100%;
+	margin: 10px 0;
+	padding: 10px;
+	background-color: rgba(255, 255, 255, 0.6);
+}
+
+form.purgeban input[name='query'] {
+	width: 50%;
+}
+
+form.purgeban .purgeban-query {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 0 -5px;
+}
+
+form.purgeban .purgeban-query > * {
+	margin: auto 5px;
+	flex: none;
+}
+
+form.purgeban .purgeban-query > input[name='query'] {
+	flex-shrink: 1;
+	flex-grow: 1;
+	flex-basis: 100px;
+}
+
+form.purgeban .prefix {
+	font-family: monospace;
+	color: rgb(160, 159, 159);
+}
+
+#frm-ban .prefix .inner {
+	transition: all .2s ease;
+	display: block;
+	overflow: hidden;
+	max-width: 100px;
+	white-space: nowrap;
+}
+
+#frm-ban .prefix.revealed .inner {
+	max-width: 100%;
+}
+
+.prefix-reveal {
+	color: rgb(85, 85, 85);
+}
+
+#page-header {
+	flex-wrap: wrap;
+}
+
+.dashboard {
+	width: 100%;
+	margin: 20px 0;
+	border-top: 1px solid #eee;
+	padding-top: 20px;
+}
+
+#purgeban-output {
+	margin: 20px 0;
+	padding: 10px;
+	border: 1px inset #eee;
+	background-color: #eee;
+}
+
+.instructions {
+	margin: 10px 0;
+	color: rgb(119, 119, 119);
+}
+
+.instructions b {
+	color: #2a343f;
+}
+
+.template-keys {
+	margin: 10px 0;
+	padding: 10px;
+	background-color: rgb(245, 245, 245);
+}
+
+.template-keys h3 {
+	margin: 5px 0;
+}
+
+.template-keys p {
+	margin: 5px 0;
+}
+
+.template-keys li {
+	display: inline-block;
+	border-radius: 3px;
+	padding: 2px 4px;
+	background-color: #7aaff0;
+}

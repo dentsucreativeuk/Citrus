@@ -1,0 +1,129 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+{#
+/**
+ * citrus plugin for Craft CMS 3.x
+ *
+ * citrus index.twig
+ *
+ * @author    Whitespace
+ * @copyright Copyright (c) 2018 Whitespace
+ * @link      https://whitespacers.com
+ * @package   Citrus
+ * @since     0.0.1
+ */
+#}
+
+{% extends "citrus/_layouts/cp" %}
+
+{% set selectedSubnavItem = "" %}
+
+{% import "_includes/forms" as forms %}
+
+{# Content that should appear in the page header#}
+{% block actionButton %}
+    <form id="frm-banall">
+		<input type="submit" class="btn submit" value="Clear entire cache" data-modal-trigger="varnish-confirm-purge">
+	</form>
+{% endblock %}
+
+{# The content of the CP Section#}
+{% set content %}
+    <div id="tab-purge">
+		<form id="frm-purge" class="purgeban">
+			<fieldset>
+				<div class="heading">
+					<label id="title-label" class="required" for="purge-uri">URI</label>
+				</div>
+
+				<div class="purgeban-query">
+					<div class="select">
+						<select name="host">
+							<option value="">{{ 'Send to all Varnish hosts'|t }}</option>
+							{% for id, host in hosts %}
+							<option value="{{ id }}">{{ id }} ({{ host.hostName }})</option>
+							{% endfor %}
+						</select>
+					</div>
+					<input class="text" type="text" id="purge-uri" name="query" value="" autofocus="" autocomplete="off" placeholder="/uri/to/purge">
+					<input type="submit" class="btn submit" value="Purge URI">
+				</div>
+			</fieldset>
+
+			<input type="hidden" name="purgeban_type" value="purge">
+			<input type="hidden" name="{{ craft.app.config.general.csrfTokenName }}" value="{{ craft.app.request.csrfToken }}">
+		</form>
+	</div>
+
+	{% if bansSupported %}
+		<div id="tab-ban" class="hidden">
+			<form id="frm-ban" class="purgeban">
+				<fieldset>
+					<div class="heading">
+						<label id="title-label" class="required" for="ban-query">Full query</label>
+					</div>
+
+					<div class="purgeban-query">
+						<div class="select">
+							<select name="host">
+								<option value="">{{ 'Send to all Varnish hosts'|t }}</option>
+								{% for id, host in hosts %}
+								<option value="{{ id }}">{{ id }} ({{ host.hostName }})</option>
+								{% endfor %}
+							</select>
+						</div>
+						{# <a href="#" data-prefix-reveal="ban-prefix" class="prefix-reveal">&hellip;</a> #}
+						<input class="text" type="text" id="ban-query" name="query" autofocus="" autocomplete="off" placeholder="req.http.host == ${hostname} &amp;&amp; req.url ~ .*" value="req.http.host == ${hostname} &amp;&amp; req.url ~ .*" class="">
+						<input type="submit" class="btn submit" value="Send Ban Query">
+					</div>
+
+					{% include 'citrus/fragments/bankeys' with locales %}
+				</fieldset>
+
+				<input type="hidden" name="purgeban_type" value="ban">
+				<input type="hidden" name="{{ craft.app.config.general.csrfTokenName }}" value="{{ craft.app.request.csrfToken }}">
+			</form>
+		</div>
+	{% endif %}
+
+	<div id="purgeban-output">
+		<pre><code class="output">Output</code></pre>
+	</div>
+
+	{% if adminHosts|length > 0 and bansSupported %}
+	<div class="dashboard">
+		<div class="banlist">
+			<form id="frm-banlist" action="/admin/citrus/ban/list" method="post" class="ajax-form" data-output="#banlist-output">
+				<fieldset>
+					<div class="select">
+						<select name="host">
+							<option value="">{{ 'All hosts'|t }}</option>
+							{% for id, host in adminHosts %}
+								<option value="{{ id }}">{{ id }} ({{ host.hostName }})</option>
+							{% endfor %}
+						</select>
+					</div>
+					<input type="submit" class="btn submit" value="Get ban list">
+				</fieldset>
+
+				<input type="hidden" name="{{ craft.app.config.general.csrfTokenName }}" value="{{ craft.app.request.csrfToken }}">
+			</form>
+
+			<div id="banlist-output"></div>
+		</div>
+	</div>
+	{% endif %}
+
+	<form id="varnish-confirm-purge" method="post" class="varnish modal fitted" style="display: none">
+		<div class="body">
+			<h2>Clear entire cache</h2>
+			<p>Are you sure you want to clear the entire cache?</p>
+			<div class="buttons right" style="margin-top: 0;">
+				<input type="button" class="btn" data-form-cancel value="Cancel">
+				<input type="submit" class="btn submit" value="Clear">
+				<input type="hidden" name="purgeban_type" value="ban">
+				<input type="hidden" name="query" value="req.http.host == ${hostname} &amp;&amp; req.url ~ .*">
+				<input type="hidden" name="{{ craft.app.config.general.csrfTokenName }}" value="{{ craft.app.request.csrfToken }}">
+			</div>
+		</div>
+	</form>
+{% endset %}

@@ -1,0 +1,10 @@
+<div class="template-keys">
+	<h3>Ban query template keys</h3>
+	<p>The following keys can be used within a ban query and will be automatically converted when sending to the Varnish host:</p>
+	<ul>
+		<li>${hostName}</li>
+		{% for locale in locales %}
+		<li>${baseUrl-{{locale}}}</li>
+		{% endfor %}
+	</ul>
+</div>
