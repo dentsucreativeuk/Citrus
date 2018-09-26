@@ -22,6 +22,7 @@ use craft\base\Plugin;
 use craft\services\Plugins;
 use craft\events\PluginEvent;
 use craft\web\UrlManager;
+use craft\web\User;
 use craft\web\twig\variables\CraftVariable;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterCpNavItemsEvent;
@@ -145,6 +146,22 @@ class Citrus extends Plugin
             }
         );
 
+        // Add/Remove citrus cookies
+        Event::on(
+            User::class,
+            User::EVENT_AFTER_LOGIN,
+            function (Event $event) {
+                $this->setCitrusCookie('1');
+            }
+        );
+        Event::on(
+            User::class,
+            User::EVENT_AFTER_LOGOUT,
+            function (Event $event) {
+                $this->setCitrusCookie();
+            }
+        );
+
 /**
  * Logging in Craft involves using one of the following methods:
  *
@@ -226,7 +243,7 @@ class Citrus extends Plugin
             }
         }
 
-        Craft::getLogger()->log($message, $level);
+        Craft::getLogger()->log($message, $level, $category = 'Citrus');
     }
 
     private function setCitrusCookie($value = '')
@@ -243,7 +260,7 @@ class Citrus extends Plugin
             0,
             '/',
             null,
-            Craft::$app->request->isSecureConnection(),
+            Craft::$app->request->getIsSecureConnection(),
             true
         );
     }

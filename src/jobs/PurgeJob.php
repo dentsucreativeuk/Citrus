@@ -15,7 +15,7 @@ use whitespace\citrus\Citrus;
 use Craft;
 use craft\queue\BaseJob;
 
-use whitespace\citrus\helpers\PurgeHelper
+use whitespace\citrus\helpers\PurgeHelper;
 
 /**
  * PurgeJob job
@@ -49,9 +49,9 @@ use whitespace\citrus\helpers\PurgeHelper
  */
 class PurgeJob extends BaseJob
 {
-    private $uris;
-    private $debug;
-    private $purge;
+    public $uris;
+    public $debug;
+    public $purge;
 
     // Public Methods
     // =========================================================================
@@ -66,10 +66,10 @@ class PurgeJob extends BaseJob
     public function execute($queue)
     {
         $this->purge = new PurgeHelper();
-        $this->uris = $this->getSettings()->uris;
-        $this->debug = $this->getSettings()->debug;
+        // $this->uris = $this->getSettings()->uris;
+        // $this->debug = $this->getSettings()->debug;
 
-        $totalSteps = count($this->bans);
+        $totalSteps = count($this->uris);
         for ($step = 0; $step < $totalSteps; $step++)
         {
             $this->setProgress($queue, $step / $totalSteps);

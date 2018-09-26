@@ -15,6 +15,8 @@ use whitespace\citrus\Citrus;
 use Craft;
 use craft\web\Controller;
 
+use \whitespace\citrus\jobs\PurgeJob;
+
 /**
  * PurgeController Controller
  *
@@ -77,7 +79,7 @@ class PurgeController extends Controller
 
         echo "Purging element \"{$element->title}\" ({$element->id})<br/>\r\n";
 
-        $tasks = Craft::$app->citrus->purgeElement($element, true, true);
+        $tasks = Citrus::getInstance()->citrus->purgeElement($element, true, true);
 
         foreach ($tasks as $task) {
             Craft::$app->tasks->runTask($task);
@@ -87,15 +89,17 @@ class PurgeController extends Controller
     private function testUris($num)
     {
         $settings = array(
+            'description' => null,
             'uris' => $this->fillUris(
                 '',
                 $num
             ),
-            'debug' => true
+            'debug' => true,
         );
 
-        $task = Craft::$app->tasks->createTask('Citrus_Purge', null, $settings);
-        Craft::$app->tasks->runTask($task);
+        //$task = Craft::$app->tasks->createTask('Citrus_Purge', null, $settings);
+        Craft::$app->queue->push(new PurgeJob($settings));
+        Craft::$app->getQueue()->run();
     }
 
     private function fillUris($prefix, int $count = 1) {
@@ -104,7 +108,7 @@ class PurgeController extends Controller
         for ($a = 0; $a < $count; $a += 1) {
             array_push(
                 $result,
-                Craft::$app->citrus->makeVarnishUri($prefix . '?n=' . $this->uuid())
+                Citrus::getInstance()->citrus->makeVarnishUri($prefix . '?n=' . $this->uuid())
             );
         }
 

@@ -169,13 +169,13 @@ class BindingsController extends Controller
             throw(new Exception('Element tyoe is not an Entry. Only entries are supported.'));
         }
 
-        $uris = Craft::$app->citrus->getBindingQueries(
+        $uris = Citrus::getInstance()->citrus->getBindingQueries(
             $element->section->id,
             $element->type->id,
             Citrus_BindingsRecord::TYPE_PURGE
         );
 
-        $bans = Craft::$app->citrus->getBindingQueries(
+        $bans = Citrus::getInstance()->citrus->getBindingQueries(
             $element->section->id,
             $element->type->id,
             array(

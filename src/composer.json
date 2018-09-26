@@ -1,9 +1,10 @@
 {
 	"type": "craft-plugin",
+	"minimum-stability": "dev",
 	"repositories": [
 		{
 			"type": "vcs",
-			"url": "https://github.com/njpanderson/varnish-connect"
+			"url": "https://github.com/whitespacers/varnish-connect"
 		}
 	],
 	"require": {

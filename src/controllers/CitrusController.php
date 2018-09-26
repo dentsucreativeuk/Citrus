@@ -90,8 +90,6 @@ class CitrusController extends Controller
         $query = Craft::$app->request->getBodyParam('query');
         $hostId = $this->getPostWithDefault('host', null);
 
-        Craft::$app->response->headers->set('Content-type', 'application/json');
-
         if ($type === 'ban') {
             // Type is "ban" - send a ban query
             $responses = Citrus::getInstance()->citrus->banQuery($query, true, $hostId);
@@ -101,7 +99,7 @@ class CitrusController extends Controller
         }
 
         if (Craft::$app->request->isAjax) {
-            echo json_encode(array(
+            return $this->asJson(array(
                 'query' => $query,
                 'responses' => ($responses),
                 'CSRF' => array(

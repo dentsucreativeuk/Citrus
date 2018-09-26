@@ -4,27 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5576c49c657c7eb19bdfde55c4489729",
+    "content-hash": "638dd7cf1878ccad277f633658ec950f",
     "packages": [
         {
             "name": "njpanderson/varnish-connect",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/njpanderson/varnish-connect.git",
-                "reference": "bbebd19d1510f239508ba104e63ca7ddcd06b8a5"
+                "url": "https://github.com/Whitespacers/varnish-connect.git",
+                "reference": "4c2ec5ca0d59741822179dfe6a60bc4f3c51bed6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/njpanderson/varnish-connect/zipball/bbebd19d1510f239508ba104e63ca7ddcd06b8a5",
-                "reference": "bbebd19d1510f239508ba104e63ca7ddcd06b8a5",
+                "url": "https://api.github.com/repos/Whitespacers/varnish-connect/zipball/4c2ec5ca0d59741822179dfe6a60bc4f3c51bed6",
+                "reference": "4c2ec5ca0d59741822179dfe6a60bc4f3c51bed6",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "autoload": {
@@ -33,15 +30,14 @@
                 }
             },
             "support": {
-                "source": "https://github.com/njpanderson/varnish-connect/tree/master",
-                "issues": "https://github.com/njpanderson/varnish-connect/issues"
+                "source": "https://github.com/Whitespacers/varnish-connect/tree/master"
             },
-            "time": "2018-02-07T06:29:47+00:00"
+            "time": "2018-09-26T10:24:31+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "njpanderson/varnish-connect": 20
     },

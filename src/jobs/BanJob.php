@@ -15,7 +15,7 @@ use whitespace\citrus\Citrus;
 use Craft;
 use craft\queue\BaseJob;
 
-use whitespace\citrus\helpers\BanHelper
+use whitespace\citrus\helpers\BanHelper;
 
 /**
  * BanJob job
