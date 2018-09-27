@@ -15,7 +15,7 @@ use whitespace\citrus\Citrus;
 use Craft;
 use craft\web\Controller;
 
-use \whitespace\citrus\jobs\PurgeJob;
+use whitespace\citrus\jobs\PurgeJob;
 
 /**
  * PurgeController Controller
@@ -81,9 +81,7 @@ class PurgeController extends Controller
 
         $tasks = Citrus::getInstance()->citrus->purgeElement($element, true, true);
 
-        foreach ($tasks as $task) {
-            Craft::$app->tasks->runTask($task);
-        }
+        Craft::$app->getQueue()->run();
     }
 
     private function testUris($num)

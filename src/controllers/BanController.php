@@ -15,6 +15,8 @@ use whitespace\citrus\Citrus;
 use Craft;
 use craft\web\Controller;
 
+use whitespace\citrus\jobs\BanJob;
+
 use njpanderson\VarnishConnect;
 
 /**
@@ -85,12 +87,13 @@ class BanController extends Controller
         }
 
         $settings = array(
+            'description' => null,
             'bans' => $bans,
             'debug' => true
         );
 
-        $task = Craft::$app->tasks->createTask('Citrus_Ban', null, $settings);
-        Craft::$app->tasks->runTask($task);
+        Craft::$app->queue->push(new BanJob($settings));
+        Craft::$app->getQueue()->run();
     }
 
     public function actionList()

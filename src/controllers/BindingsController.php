@@ -15,6 +15,11 @@ use whitespace\citrus\Citrus;
 use Craft;
 use craft\web\Controller;
 
+use whitespace\citrus\records\BindingsRecord;
+
+use whitespace\citrus\jobs\BanJob;
+use whitespace\citrus\jobs\PurgeJob;
+
 /**
  * BindingsController Controller
  *
@@ -160,52 +165,47 @@ class BindingsController extends Controller
 
     public function actionTest()
     {
-        $tasks = array();
         $element = Craft::$app->elements->getElementById(
             (int) Craft::$app->request->getQueryParam('id')
         );
 
-        if ($element->getElementType() != ElementType::Entry) {
+        if (get_class($element->type) != 'craft\models\EntryType') {
             throw(new Exception('Element tyoe is not an Entry. Only entries are supported.'));
         }
 
         $uris = Citrus::getInstance()->citrus->getBindingQueries(
             $element->section->id,
             $element->type->id,
-            Citrus_BindingsRecord::TYPE_PURGE
+            BindingsRecord::TYPE_PURGE
         );
 
         $bans = Citrus::getInstance()->citrus->getBindingQueries(
             $element->section->id,
             $element->type->id,
             array(
-                Citrus_BindingsRecord::TYPE_BAN,
-                Citrus_BindingsRecord::TYPE_FULLBAN
+                BindingsRecord::TYPE_BAN,
+                BindingsRecord::TYPE_FULLBAN
             )
         );
 
         if (count($uris) > 0) {
-            array_push(
-                $tasks,
-                Craft::$app->tasks->createTask('Citrus_Purge', null, array(
-                    'uris' => $uris,
-                    'debug' => true
-                ))
+            $settings = array(
+                'description' => null,
+                'uris' => $uris,
+                'debug' => true
             );
+            Craft::$app->queue->push(new PurgeJob($settings));
         }
 
         if (count($bans) > 0) {
-            array_push(
-                $tasks,
-                Craft::$app->tasks->createTask('Citrus_Ban', null, array(
-                    'bans' => $bans,
-                    'debug' => true
-                ))
+            $settings = array(
+                'description' => null,
+                'bans' => $bans,
+                'debug' => true
             );
+            Craft::$app->queue->push(new BanJob($settings));
         }
 
-        foreach ($tasks as $task) {
-            Craft::$app->tasks->runTask($task);
-        }
+        Craft::$app->getQueue()->run();
     }
 }

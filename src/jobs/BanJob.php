@@ -49,10 +49,10 @@ use whitespace\citrus\helpers\BanHelper;
  */
 class BanJob extends BaseJob
 {
-    private $bans;
-    private $socket;
-    private $ban;
-    private $debug;
+    public $bans;
+    public $socket;
+    public $ban;
+    public $debug;
 
     // Public Methods
     // =========================================================================
@@ -60,8 +60,6 @@ class BanJob extends BaseJob
     public function execute($queue)
     {
         $this->ban = new BanHelper();
-        $this->bans = $this->getSettings()->bans;
-        $this->debug = $this->getSettings()->debug;
 
         $totalSteps = count($this->bans);
         for ($step = 0; $step < $totalSteps; $step++)

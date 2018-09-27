@@ -66,8 +66,6 @@ class PurgeJob extends BaseJob
     public function execute($queue)
     {
         $this->purge = new PurgeHelper();
-        // $this->uris = $this->getSettings()->uris;
-        // $this->debug = $this->getSettings()->debug;
 
         $totalSteps = count($this->uris);
         for ($step = 0; $step < $totalSteps; $step++)

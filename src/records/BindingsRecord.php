@@ -33,6 +33,10 @@ use craft\db\ActiveRecord;
  */
 class BindingsRecord extends ActiveRecord
 {
+    const TYPE_PURGE = 'PURGE';
+    const TYPE_BAN = 'BAN';
+    const TYPE_FULLBAN = 'FULLBAN';
+
     // Public Static Methods
     // =========================================================================
 

@@ -14,6 +14,8 @@ use whitespace\citrus\Citrus;
 
 use Craft;
 use craft\base\Component;
+use whitespace\citrus\records\EntryRecord;
+use whitespace\citrus\records\UriRecord;
 
 /**
  * UriService Service
@@ -51,7 +53,7 @@ class UriService extends Component
         $this->saveURI($uri);
 
         // Save Entry record
-        $entry = new Citrus_EntryRecord();
+        $entry = new EntryRecord();
 
         $entry->uriId = $uri->id;
         $entry->entryId = $entryId;
@@ -75,7 +77,7 @@ class UriService extends Component
 
     public function getURI($id)
     {
-        return Citrus_uriRecord::model()->findAllByPk($id);
+        return UriRecord::model()->findAllByPk($id);
     }
 
     public function getURIByURIHash($uriHash = '')
@@ -84,7 +86,7 @@ class UriService extends Component
             throw new Exception('$uriHash cannot be blank.');
         }
 
-        $uri = Citrus_uriRecord::model()->findByAttributes(array(
+        $uri = UriRecord::model()->findByAttributes(array(
           'uriHash' => $uriHash
         ));
 
@@ -92,21 +94,21 @@ class UriService extends Component
             return $uri;
         }
 
-        return new Citrus_uriRecord();
+        return new UriRecord();
     }
 
     public function getAllURIsByEntryId(int $entryId)
     {
-        return Citrus_uriRecord::model()->with(array(
+        return UriRecord::find()->with(array(
             'entries' => array(
                 'select' => false,
                 'condition' => 'entryId = ' . $entryId
             )
-        ))->findAll();
+        ))->all();
     }
 
     public function saveURI(
-        Citrus_uriRecord $uri
+        UriRecord $uri
     ) {
         $uri->save();
     }

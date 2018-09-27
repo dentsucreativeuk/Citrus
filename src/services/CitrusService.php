@@ -18,8 +18,12 @@ use craft\elements\Category;
 use craft\elements\Entry;
 use craft\elements\MatrixBlock;
 
-use \whitespace\citrus\helpers\BanHelper;
-use \whitespace\citrus\helpers\PurgeHelper;
+use whitespace\citrus\helpers\BanHelper;
+use whitespace\citrus\helpers\PurgeHelper;
+use whitespace\citrus\records\BindingsRecord;
+
+use whitespace\citrus\jobs\BanJob;
+use whitespace\citrus\jobs\PurgeJob;
 
 /**
  * CitrusService Service
@@ -72,21 +76,21 @@ class CitrusService extends Component
                     $this->getElementUris($element, $locale, $purgeRelated)
                 );
 
-                if ($element->getElementType() == ElementType::Entry) {
+                if (get_class($element->type) == 'craft\models\EntryType') {
                     $uris = array_merge($uris, $this->getTagUris($element->id));
 
                     $uris = array_merge($uris, $this->getBindingQueries(
                         $element->section->id,
                         $element->type->id,
-                        Citrus_BindingsRecord::TYPE_PURGE
+                        BindingsRecord::TYPE_PURGE
                     ));
 
                     $bans = array_merge($bans, $this->getBindingQueries(
                         $element->section->id,
                         $element->type->id,
                         array(
-                            Citrus_BindingsRecord::TYPE_BAN,
-                            Citrus_BindingsRecord::TYPE_FULLBAN
+                            BindingsRecord::TYPE_BAN,
+                            BindingsRecord::TYPE_FULLBAN
                         )
                     ));
                 }
@@ -149,7 +153,7 @@ class CitrusService extends Component
     public function getBindingQueries($sectionId, $typeId, $bindType = null)
     {
         $queries = array();
-        $bindings = Craft::$app->citrus_bindings->getBindings(
+        $bindings = Citrus::getInstance()->bindings->getBindings(
             $sectionId,
             $typeId,
             $bindType
@@ -157,8 +161,8 @@ class CitrusService extends Component
 
         foreach ($bindings as $binding) {
             $isCorrectType = (
-                $binding->bindType === Citrus_BindingsRecord::TYPE_PURGE &&
-                $bindType === Citrus_BindingsRecord::TYPE_PURGE
+                $binding->bindType === BindingsRecord::TYPE_PURGE &&
+                $bindType === BindingsRecord::TYPE_PURGE
             );
 
             if ($isCorrectType) {
@@ -172,7 +176,7 @@ class CitrusService extends Component
                 // Multiple bind types are requested
                 $queries[] = array(
                     'query' => $binding->query,
-                    'full' => ($binding->bindType === Citrus_BindingsRecord::TYPE_FULLBAN)
+                    'full' => ($binding->bindType === BindingsRecord::TYPE_FULLBAN)
                 );
             } else {
                 // One bind type is requested (but not purge)
@@ -272,12 +276,6 @@ class CitrusService extends Component
             }
         }
 
-        foreach (Craft::$app->plugins->call('CitrusTransformElementUris', [$element, $uris]) as $plugin => $pluginUris) {
-            if ($pluginUris !== null) {
-                $uris = $pluginUris;
-            }
-        }
-
         return $uris;
     }
 
@@ -287,7 +285,7 @@ class CitrusService extends Component
     private function getTagUris($elementId)
     {
         $uris = array();
-        $tagUris = Craft::$app->citrus_uri->getAllURIsByEntryId($elementId);
+        $tagUris = Citrus::getInstance()->uri->getAllURIsByEntryId($elementId);
 
         foreach ($tagUris as $tagUri) {
             $uris[] = $this->makeVarnishUri(
@@ -370,61 +368,21 @@ class CitrusService extends Component
      */
     private function makeTask($taskName, $settings = array())
     {
-        // If there are any pending tasks, just append the paths to it
-        $task = Craft::$app->tasks->getNextPendingTask($taskName);
 
-        if ($task && is_array($task->settings)) {
-            $original_settings = $task->settings;
+        Citrus::log(
+            'Created task (' . $taskName . ')',
+            'info',
+            Citrus::getInstance()->settings->logAll
+        );
 
-            switch ($taskName) {
-                case 'Citrus_Purge':
-                    // Ensure 'uris' setting is an array
-                    if (!is_array($original_settings['uris'])) {
-                        $original_settings['uris'] = array($original_settings['uris']);
-                    }
-
-                    // Merge with existing URLs
-                    $original_settings['uris'] = array_merge(
-                        $original_settings['uris'],
-                        $settings['uris']
-                    );
-
-                    // Make sure there aren't any duplicate paths
-                    $original_settings['uris'] = $this->uniqueUris($original_settings['uris']);
-                    break;
-
-                case 'Citrus_Ban':
-                    // Merge with existing bans
-                    $original_settings['bans'] = array_merge(
-                        $original_settings['bans'],
-                        $settings['bans']
-                    );
-
-                    // Make sure there aren't any duplicate bans
-                    $original_settings['bans'] = $this->uniqueUris($original_settings['bans']);
-                    break;
-            }
-
-            // Set the new settings and save the task
-            $task->settings = $original_settings;
-            Craft::$app->tasks->saveTask($task, false);
-
-            Citrus::log(
-                'Appended task (' . $taskName . ')',
-                'info',
-                Craft::$app->citrus->getSetting('logAll')
-            );
-
-            return $task;
-        } else {
-            Citrus::log(
-                'Created task (' . $taskName . ')',
-                'info',
-                Craft::$app->citrus->getSetting('logAll')
-            );
-
-            return Craft::$app->tasks->createTask($taskName, null, $settings);
+        switch ($taskName) {
+            case 'Citrus_Purge':
+                return Craft::$app->queue->push(new PurgeJob($settings));
+            case 'Citrus_Ban':
+                return Craft::$app->queue->push(new BanJob($settings));
         }
+
+        return false;
     }
 
     /**
