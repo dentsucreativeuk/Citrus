@@ -27,6 +27,7 @@ use craft\web\twig\variables\CraftVariable;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterCpNavItemsEvent;
 use craft\web\twig\variables\Cp;
+use craft\services\Elements;
 
 use yii\base\Event;
 
@@ -145,6 +146,48 @@ class Citrus extends Plugin
                 }
             }
         );
+
+        if ($this->settings->purgeEnabled) {
+            $purgeRelated = $this->settings->purgeRelated;
+
+            Event::on(
+                Elements::class,
+                Elements::EVENT_AFTER_SAVE_ELEMENT,
+                function (Event $event) use ($purgeRelated) {
+                    // element saved
+                    Citrus::getInstance()->citrus->purgeElement($event->element, $purgeRelated);
+                }
+            );
+
+            Event::on(
+                Elements::class,
+                Elements::EVENT_AFTER_DELETE_ELEMENT,
+                function (Event $event) use ($purgeRelated) {
+                    // element deleted
+                    Citrus::getInstance()->citrus->purgeElement($event->element, $purgeRelated);
+                }
+            );
+
+            Event::on(
+                Elements::class,
+                Elements::EVENT_AFTER_PERFORM_ACTION,
+                function (Event $event) use ($purgeRelated) {
+                    //entry deleted via element action
+                    $action = $event->params['action']->classHandle;
+                    if ($action == 'Delete') {
+                        $elements = $event->params['criteria']->find();
+
+                        foreach ($elements as $element) {
+                            if ($element->elementType !== 'Entry') {
+                                return;
+                            }
+
+                            Citrus::getInstance()->citrus->purgeElement($element, $purgeRelated);
+                        }
+                    }
+                }
+            );
+        }
 
         // Add/Remove citrus cookies
         Event::on(

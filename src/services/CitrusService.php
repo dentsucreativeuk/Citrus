@@ -98,12 +98,11 @@ class CitrusService extends Component
 
             $uris = $this->uniqueUris($uris);
 
-            // $uris = array_merge($uris, $this->getMappedUris($uris));
-
             if (count($uris) > 0) {
                 array_push(
                     $tasks,
                     $this->makeTask('Citrus_Purge', array(
+                        'description' => null,
                         'uris' => $uris,
                         'debug' => $debug
                     ))
@@ -114,6 +113,7 @@ class CitrusService extends Component
                 array_push(
                     $tasks,
                     $this->makeTask('Citrus_Ban', array(
+                        'description' => null,
                         'bans' => $bans,
                         'debug' => $debug
                     ))
@@ -368,7 +368,7 @@ class CitrusService extends Component
      */
     private function makeTask($taskName, $settings = array())
     {
-
+        $job = false;
         Citrus::log(
             'Created task (' . $taskName . ')',
             'info',
@@ -377,12 +377,16 @@ class CitrusService extends Component
 
         switch ($taskName) {
             case 'Citrus_Purge':
-                return Craft::$app->queue->push(new PurgeJob($settings));
+                $job = new PurgeJob($settings);
+                break;
             case 'Citrus_Ban':
-                return Craft::$app->queue->push(new BanJob($settings));
+                $job = new BanJob($settings);
+                break;
         }
 
-        return false;
+        if ($job) {
+            return Craft::$app->queue->push($job);
+        }
     }
 
     /**

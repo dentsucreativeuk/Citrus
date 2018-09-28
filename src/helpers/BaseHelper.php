@@ -120,12 +120,12 @@ trait BaseHelper
 			);
 
 			if (!$host['url']) {
-				$host['url'] = array_fill_keys([Craft::$app->language], UrlHelper::baseSiteUrl());
+				$host['url'] = array_fill_keys([Craft::$app->sites->currentSite->id], UrlHelper::baseSiteUrl());
 			}
 
 			if (!is_array($host['url'])) {
-				// URL array is not split by locale, create with current locale
-				$host['url'] = array_fill_keys([Craft::$app->language], $host['url']);
+				// URL array is not split by site, create with current site
+				$host['url'] = array_fill_keys([Craft::$app->sites->currentSite->id], $host['url']);
 			}
 		}
 
