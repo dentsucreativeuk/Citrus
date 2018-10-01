@@ -264,15 +264,6 @@ class CitrusService extends Component
                     }
                 }
                 unset($relatedMatrixes);
-
-                // get directly related categories
-                $relatedCategories = $this->getRelatedElementsOfType($element, $locale, 'category');
-                foreach ($relatedCategories as $related) {
-                    if ($related->uri != '') {
-                        $uris[] = $this->makeVarnishUri($related->uri, $locale);
-                    }
-                }
-                unset($relatedCategories);
             }
         }
 
@@ -407,6 +398,7 @@ class CitrusService extends Component
         $result = array();
 
         foreach ($uris as $uri) {
+
             if (!isset($uri['locale']) || empty($uri['locale'])) {
                 $uri['locale'] = '<none>';
             }
@@ -417,6 +409,11 @@ class CitrusService extends Component
 
             if (isset($uri['uri']) && !in_array($uri['uri'], $found[$uri['locale']])) {
                 array_push($found[$uri['locale']], $uri['uri']);
+
+                // reset any locales to null if required
+                if ($uri['locale'] === '<none>') {
+                    $uri['locale'] = NULL;
+                }
                 array_push($result, $uri);
             }
         }
