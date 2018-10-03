@@ -31,7 +31,12 @@ class PurgeHelper
 
 	private function sendPurge($id, $host, $url, $debug = false)
 	{
-
+		Citrus::log(
+                "CitrusDebug - Sending purge for: '{$url}'",
+                'info',
+                Citrus::getInstance()->settings->logAll,
+                false
+            );
 		$response = new ResponseHelper(
 			ResponseHelper::CODE_OK
 		);
@@ -39,13 +44,6 @@ class PurgeHelper
 		$client = new \GuzzleHttp\Client(['headers/Accept' => '*/*']);
 		$headers = array(
 			'Host' => $host
-		);
-
-		Citrus::log(
-			'Adding "' . $id . '" url to purge: ' . $url,
-			'info',
-			Citrus::getInstance()->settings->logAll,
-			$debug
 		);
 
 		$request = new Request('PURGE', $url, $headers);

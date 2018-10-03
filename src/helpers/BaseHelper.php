@@ -124,8 +124,14 @@ trait BaseHelper
 			}
 
 			if (!is_array($host['url'])) {
-				// URL array is not split by site, create with current site
-				$host['url'] = array_fill_keys([Craft::$app->sites->currentSite->id], $host['url']);
+				$url = $host['url'];
+				$hostArray = array();
+				// URL array is not split by site, create with each site
+				foreach(Craft::$app->sites->allSiteIds as $siteId) {
+					$hostArray[$siteId] = $url;
+				}
+
+				$host['url'] = $hostArray;
 			}
 		}
 
@@ -177,9 +183,7 @@ trait BaseHelper
 		);
 
 		if ($e instanceof \GuzzleHttp\Exception\BadResponseException) {
-			$response->message = 'Error on "' . $hostId . '" URL "' .
-					$e->getRequest()->getUrl() . '"' .
-					' (' . $e->getResponse()->getStatusCode() . ' - ' .
+			$response->message = 'Error on "' . $hostId . '(' . $e->getResponse()->getStatusCode() . ' - ' .
 					$e->getResponse()->getReasonPhrase() . ')';
 
 			Citrus::log(
