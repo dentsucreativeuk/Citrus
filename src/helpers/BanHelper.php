@@ -57,7 +57,7 @@ class BanHelper
 		$headers[$banQueryHeader] = $banQuery;
 
 		Citrus::log(
-			"Sending BAN query to '{$host['url'][Craft::$app->language]}': '{$banQuery}'",
+			"Sending BAN query to '{$host['url'][Craft::$app->sites->currentSite->id]}': '{$banQuery}'",
 			'info',
 			Citrus::getInstance()->settings->logAll,
 			$debug
@@ -66,7 +66,7 @@ class BanHelper
 		// Ban requests always go to / but with a header determining the ban query
 		$request = new Request(
 			'BAN',
-			$host['url'][Craft::$app->language],
+			$host['url'][Craft::$app->sites->currentSite->id],
 			$headers
 		);
 
