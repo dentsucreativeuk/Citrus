@@ -92,23 +92,7 @@ trait BaseHelper
 		$hosts = Citrus::getInstance()->settings->varnishHosts;
 
 		if (!is_array($hosts) || empty($hosts)) {
-			// Hosts is not an array - make into one using the global settings
-			$canDoAdminBans = (
-				!empty(Citrus::getInstance()->settings->adminIP) &&
-				!empty(Citrus::getInstance()->settings->adminPort) &&
-				!empty(Citrus::getInstance()->settings->adminSecret)
-			);
-
-			$hosts = [
-				'public' => [
-					'url' => Citrus::getInstance()->settings->varnishUrl,
-					'hostName' => Citrus::getInstance()->settings->varnishHostName,
-					'adminIP' => Citrus::getInstance()->settings->adminIP,
-					'adminPort' => Citrus::getInstance()->settings->adminPort,
-					'adminSecret' => Citrus::getInstance()->settings->adminSecret,
-					'canDoAdminBans' => $canDoAdminBans
-				]
-			];
+			$hosts = [];
 		}
 
 		// Normalise and sanity check hosts before returning
