@@ -76,7 +76,7 @@ class CitrusService extends Component
                     $this->getElementUris($element, $locale, $purgeRelated)
                 );
 
-                if (get_class($element->type) == 'craft\models\EntryType') {
+                if ($element instanceof \craft\elements\Entry) {
                     $uris = array_merge($uris, $this->getTagUris($element->id));
 
                     $uris = array_merge($uris, $this->getBindingQueries(

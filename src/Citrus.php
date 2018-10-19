@@ -173,16 +173,14 @@ class Citrus extends Plugin
                 Elements::EVENT_AFTER_PERFORM_ACTION,
                 function (Event $event) use ($purgeRelated) {
                     //entry deleted via element action
-                    $action = $event->params['action']->classHandle;
+                    $action = $event->action->className();
                     if ($action == 'Delete') {
-                        $elements = $event->params['criteria']->find();
+                        $elements = $event->criteria->all();
 
                         foreach ($elements as $element) {
-                            if ($element->elementType !== 'Entry') {
-                                return;
+                            if ($element instanceof \craft\elements\Entry) {
+                                Citrus::getInstance()->citrus->purgeElement($element, $purgeRelated);
                             }
-
-                            Citrus::getInstance()->citrus->purgeElement($element, $purgeRelated);
                         }
                     }
                 }
