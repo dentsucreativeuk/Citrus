@@ -147,7 +147,7 @@ class Install extends Migration
                     'dateUpdated' => $this->dateTime()->notNull(),
                     'uid' => $this->uid(),
                 // Custom columns in the table
-                    'uriHash' => $this->text()->notNull()->defaultValue(''),
+                    'uriHash' => $this->text()->notNull(),
                     'locale' => $this->string(255)->notNull()->defaultValue(''),
                 ]
             );
