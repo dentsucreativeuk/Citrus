@@ -17,7 +17,7 @@ use craft\web\Controller;
 
 use whitespace\citrus\jobs\BanJob;
 
-use njpanderson\VarnishConnect;
+use \njpanderson\VarnishConnect;
 
 /**
  * BanController Controller
