@@ -98,8 +98,6 @@ class Citrus extends Plugin
         parent::init();
         self::$plugin = $this;
 
-        require __DIR__ . '/vendor/autoload.php';
-
         // Set components
         $this->setComponents([
             'bindings' => BindingsService::class,
