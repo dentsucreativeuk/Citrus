@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2647579bef89b64b8ddbbdb5bf1b2708",
+    "content-hash": "88f430995a967c4f4b478944bf9c5979",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -1262,34 +1262,6 @@
                 "shell"
             ],
             "time": "2019-08-17T06:39:51+00:00"
-        },
-        {
-            "name": "njpanderson/varnish-connect",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Whitespacers/varnish-connect.git",
-                "reference": "4c2ec5ca0d59741822179dfe6a60bc4f3c51bed6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Whitespacers/varnish-connect/zipball/4c2ec5ca0d59741822179dfe6a60bc4f3c51bed6",
-                "reference": "4c2ec5ca0d59741822179dfe6a60bc4f3c51bed6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "njpanderson\\VarnishConnect\\": "src"
-                }
-            },
-            "support": {
-                "source": "https://github.com/Whitespacers/varnish-connect/tree/master"
-            },
-            "time": "2018-09-26T10:24:31+00:00"
         },
         {
             "name": "opis/closure",
@@ -3429,6 +3401,32 @@
             "time": "2018-09-02T14:59:54+00:00"
         },
         {
+            "name": "whitespace/varnish-connect",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Whitespacers/varnish-connect.git",
+                "reference": "b9264a9b9ff15b5d29c4926b6e496811ab5cae40"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Whitespacers/varnish-connect/zipball/b9264a9b9ff15b5d29c4926b6e496811ab5cae40",
+                "reference": "b9264a9b9ff15b5d29c4926b6e496811ab5cae40",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "njpanderson\\VarnishConnect\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-09-04T17:01:56+00:00"
+        },
+        {
             "name": "yii2tech/ar-softdelete",
             "version": "1.0.4",
             "source": {
@@ -3986,9 +3984,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "njpanderson/varnish-connect": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

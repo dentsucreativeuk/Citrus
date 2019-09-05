@@ -21,15 +21,9 @@
             "homepage": "https://whitespacers.com"
         }
     ],
-    "repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/whitespacers/varnish-connect"
-		}
-	],
     "require": {
         "craftcms/cms": "^3.2.0",
-        "njpanderson/varnish-connect": "dev-master"
+        "whitespace/varnish-connect": "^0.0.1"
     },
     "autoload": {
         "psr-4": {
