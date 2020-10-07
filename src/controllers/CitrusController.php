@@ -58,7 +58,7 @@ class CitrusController extends Controller
         $bansSupported = Citrus::getInstance()->settings->bansSupported;
 
         $variables = $this->getTemplateStandardVars([
-            'title' => '🍊 Citrus',
+            'title' => 'Citrus',
             'tabs' => [
                 0 => [
                     'label' => 'Purge',

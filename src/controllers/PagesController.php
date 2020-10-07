@@ -57,7 +57,7 @@ class PagesController extends Controller
     public function actionIndex()
     {
         $variables = array(
-            'title' => '🍊 Citrus - Pages'
+            'title' => 'Citrus - Pages'
         );
 
         return $this->renderTemplate('citrus/pages/index', $variables);

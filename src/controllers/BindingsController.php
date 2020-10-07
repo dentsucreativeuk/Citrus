@@ -66,7 +66,7 @@ class BindingsController extends Controller
     public function actionIndex()
     {
         $variables = array(
-            'title' => '🍊 Citrus - Bindings',
+            'title' => 'Citrus - Bindings',
             'sections' => Citrus::getInstance()->bindings->getSections()
         );
 
@@ -84,7 +84,7 @@ class BindingsController extends Controller
         }
 
         $variables = $this->getTemplateStandardVars([
-            'title' => '🍊 Citrus - Bindings',
+            'title' => 'Citrus - Bindings',
             'sectionId' => Craft::$app->request->getRequiredParam('sectionId'),
             'bindTypes' => $bindTypes,
             'tabs' => [],
