@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 Whitespace
  */
 
-namespace whitespace\citrus\assetbundles\Citrus;
+namespace whitespace\citrus\assetbundles\citrus;
 
 use Craft;
 use craft\web\AssetBundle;
