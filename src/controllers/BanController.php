@@ -64,6 +64,7 @@ class BanController extends Controller
 
     public function init()
     {
+        parent::init();
         $this->query = Craft::$app->request->getQueryParam('q');
         $this->hostId = Craft::$app->request->getQueryParam('h');
         $this->isFullQuery = Craft::$app->request->getQueryParam('f', false);
