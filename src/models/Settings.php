@@ -41,7 +41,7 @@ class Settings extends Model
      */
     public $varnishHosts = [];
     public $purgeEnabled = false;
-    public $purgeRelated = true;
+    public $purgeRelated = false;
     public $logAll = 0;
     public $purgeUriMap = [];
     public $bansSupported = false;
