@@ -11,8 +11,8 @@
         "citrus"
     ],
     "support": {
-        "docs": "https://github.com/Whitespacers/Citrus/citrus/blob/master/README.md",
-        "issues": "https://github.com/Whitespacers/Citrus/citrus/issues"
+        "docs": "https://github.com/dentsucreativeuk/Citrus",
+        "issues": "https://github.com/dentsucreativeuk/Citrus/pulls"
     },
     "license": "MIT",
     "authors": [
@@ -35,7 +35,7 @@
         "handle": "citrus",
         "hasCpSettings": false,
         "hasCpSection": true,
-        "changelogUrl": "https://raw.githubusercontent.com/Whitespacers/Citrus/citrus/master/CHANGELOG.md",
+        "changelogUrl": "https://github.com/dentsucreativeuk/Citrus/blob/master/CHANGELOG.md",
         "class": "whitespace\\citrus\\Citrus"
     }
 }
